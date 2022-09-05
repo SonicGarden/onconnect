@@ -23,7 +23,12 @@ const findElement = (element: Node, selector: string, callback: (e: HTMLElement)
 
 const onLoad = () => {
   for (const behavior of behaviors) {
-    findElement(document, behavior.selector, behavior.onConnect)
+    findElement(document, behavior.selector, (e) => {
+      const onDisconnect = behavior.onConnect(e)
+      if (onDisconnect) {
+        disposables.set(e, onDisconnect)
+      }
+    })
   }
 }
 
