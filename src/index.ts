@@ -1,4 +1,4 @@
-type OnConnect = (element: HTMLElement) => undefined | OnDisconnect
+type OnConnect = (element: HTMLElement) => void | OnDisconnect
 type OnDisconnect = () => void
 
 type Behavior = {
