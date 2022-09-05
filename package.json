@@ -1,0 +1,26 @@
+{
+  "name": "@sonicgarden/onconnect",
+  "version": "0.1.0",
+  "description": "Run something when a DOM element appears and when it exits.",
+  "module": "dist/index.js",
+  "types": "types/index.d.ts",
+  "typings": "types/index.d.ts",
+  "files": [
+    "dist/",
+    "types/"
+  ],
+  "author": "aki77",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SonicGarden/onconnect.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.2"
+  }
+}
