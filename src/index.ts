@@ -6,30 +6,40 @@ type Behavior = {
   onConnect: OnConnect
 }
 
+let observed = false
 const behaviors: Behavior[] = []
 const disposables = new WeakMap<HTMLElement, OnDisconnect>()
 
-export const onConnect = (selector: string, onConnect: OnConnect) => {
-  behaviors.push({ selector, onConnect })
+export const onConnect = (selector: string, callback: OnConnect) => {
+  const behavior = { selector, onConnect: callback }
+  behaviors.push(behavior)
+
+  if (!observed) {
+    observe()
+  }
+
+  // NOTE: trigger everything before going
+  initBehavior(document, behavior)
 }
 
-const findElement = (element: Node, selector: string, callback: (e: HTMLElement) => void) => {
+const eachElements = (element: Node, selector: string, callback: (e: HTMLElement) => void) => {
   if (!(element instanceof HTMLElement || element instanceof Document)) return
 
+  if (element instanceof HTMLElement && element.matches(selector)) {
+    callback(element)
+  }
   for (const el of element.querySelectorAll<HTMLElement>(selector)) {
     callback(el)
   }
 }
 
-const onLoad = () => {
-  for (const behavior of behaviors) {
-    findElement(document, behavior.selector, (e) => {
-      const onDisconnect = behavior.onConnect(e)
-      if (onDisconnect) {
-        disposables.set(e, onDisconnect)
-      }
-    })
-  }
+const initBehavior = (parent: Node, behavior: Behavior) => {
+  eachElements(parent, behavior.selector, (e) => {
+    const onDisconnect = behavior.onConnect(e)
+    if (onDisconnect) {
+      disposables.set(e, onDisconnect)
+    }
+  })
 }
 
 const observe = () => {
@@ -37,16 +47,11 @@ const observe = () => {
     for (const behavior of behaviors) {
       for (const mutation of mutations) {
         for (const el of mutation.addedNodes) {
-          findElement(el, behavior.selector, (e) => {
-            const onDisconnect = behavior.onConnect(e)
-            if (onDisconnect) {
-              disposables.set(e, onDisconnect)
-            }
-          })
+          initBehavior(el, behavior)
         }
 
         for (const el of mutation.removedNodes) {
-          findElement(el, behavior.selector, (e) => {
+          eachElements(el, behavior.selector, (e) => {
             const onDisconnect = disposables.get(e)
             if (onDisconnect) {
               onDisconnect()
@@ -59,10 +64,5 @@ const observe = () => {
   })
 
   observer.observe(document, { subtree: true, childList: true })
-  // NOTE: trigger everything before going
-  onLoad()
+  observed = true
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  observe()
-})
