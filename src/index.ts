@@ -10,7 +10,21 @@ let observed = false
 const behaviors: Behavior[] = []
 const disposables = new WeakMap<HTMLElement, OnDisconnect>()
 
-export const onConnect = (selector: string, callback: OnConnect) => {
+const domReady = () => {
+  if (document.readyState !== 'loading') {
+    return Promise.resolve()
+  }
+
+  return new Promise<void>((resolve) => {
+    document.addEventListener('DOMContentLoaded', () => {
+      resolve()
+    })
+  })
+}
+
+export const onConnect = async (selector: string, callback: OnConnect) => {
+  await domReady()
+
   const behavior = { selector, onConnect: callback }
   behaviors.push(behavior)
 
