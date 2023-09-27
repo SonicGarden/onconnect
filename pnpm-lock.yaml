@@ -1,15 +1,14 @@
-lockfileVersion: 5.4
-
-specifiers:
-  typescript: ^4.8.2
+lockfileVersion: '6.0'
 
 devDependencies:
-  typescript: 4.8.2
+  typescript:
+    specifier: ^5.2.2
+    version: 5.2.2
 
 packages:
 
-  /typescript/4.8.2:
-    resolution: {integrity: sha512-C0I1UsrrDHo2fYI5oaCGbSejwX4ch+9Y5jTQELvovfmFkK3HHSZJB8MSJcWLmCUBzQBchCrZ9rMRV6GuNrvGtw==}
-    engines: {node: '>=4.2.0'}
+  /typescript@5.2.2:
+    resolution: {integrity: sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==}
+    engines: {node: '>=14.17'}
     hasBin: true
     dev: true

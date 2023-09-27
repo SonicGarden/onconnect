@@ -1,6 +1,6 @@
 {
   "name": "@sonicgarden/onconnect",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "Run something when a DOM element appears and when it exits.",
   "module": "dist/index.js",
   "types": "types/index.d.ts",
@@ -21,6 +21,6 @@
     "prepublishOnly": "tsc"
   },
   "devDependencies": {
-    "typescript": "^4.8.2"
+    "typescript": "^5.2.2"
   }
 }
